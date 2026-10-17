@@ -5,12 +5,12 @@ import heroImage from "./heroImage.png";
 import category from "./category.png";
 import product from "./product.png";
 import visa from "./visa.svg";
-import mastercard from "./mastercard.svg";
+import mastercard from "./Mastercard.svg";
 import google from "./google.svg";
 import stripe from "./stripe.png";
 import crypto from "./crypto.png";
 import offer1 from "./offer1.png";
-import offer2 from "./offer2.png";
+import offer2 from "./Offer2.png";
 import pattern from "./pattern.png";
 import metamask from "./metamask.png";
 
