@@ -51,7 +51,7 @@ jobs:
           tags: growcomers-python-backend:ci
 
       - name: Scan images with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: growcomers-frontend:ci
           format: table
@@ -61,7 +61,7 @@ jobs:
           exit-code: '1'
 
       - name: Scan Node backend with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: growcomers-backend:ci
           format: table
@@ -71,7 +71,7 @@ jobs:
           exit-code: '1'
 
       - name: Scan Python backend with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: growcomers-python-backend:ci
           format: table
@@ -79,3 +79,4 @@ jobs:
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           exit-code: '1'
+
