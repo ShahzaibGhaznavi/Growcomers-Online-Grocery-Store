@@ -26,22 +26,28 @@ const Shipping = ({ onNextStep }) => {
   const addStatus = useSelector(getAddAddressStatus);
   const error = useSelector(getAddAddressError);
 
+  const [addAddressActive, setAddAddressActive] = useState(false);
+
   const handleAddAddress = async (values) => {
     try {
-      await dispatch(addAddress(values)).unwrap();
+      const response = await dispatch(addAddress(values)).unwrap();
+
+      // Newly added address ko automatically select karo
+      if (response?.data?._id) {
+        dispatch(setAddressId(response.data._id));
+      }
+
       setAddAddressActive(false);
     } catch (err) {
-      console.log(err);
+      console.log("Add Address Error:", err);
     }
   };
-
-  const [addAddressActive, setAddAddressActive] = useState(false);
 
   useEffect(() => {
     if (addressData.length === 0) {
       dispatch(fetchAddress());
     }
-  }, []);
+  }, [dispatch, addressData.length]);
 
   return (
     <div className="sm:container py-[2rem] sm:px-[4rem]">
@@ -52,6 +58,7 @@ const Shipping = ({ onNextStep }) => {
           toDispatch={removeAddErrorMessage}
         />
       ) : null}
+
       <div className="flex md:flex-row flex-col justify-between gap-16">
         <div className="flex-1 flex flex-col gap-3">
           <div className="flex flex-row justify-between items-center border-b border-textDim py-4">
@@ -78,6 +85,7 @@ const Shipping = ({ onNextStep }) => {
                     />
                   ))
                 : null}
+
               <div className="flex items-center justify-center border border-greyLight">
                 <button
                   type="button"
@@ -90,6 +98,7 @@ const Shipping = ({ onNextStep }) => {
             </div>
           )}
         </div>
+
         <CheckoutCard
           handleCheckout={onNextStep}
           buttonName="Proceed to Payments"

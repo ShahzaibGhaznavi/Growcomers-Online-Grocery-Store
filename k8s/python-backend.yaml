@@ -1,0 +1,46 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-backend
+  namespace: growcomers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-backend
+  template:
+    metadata:
+      labels:
+        app: python-backend
+    spec:
+      containers:
+        - name: python-backend
+          image: growcomers-online-grocery-store-python-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: backend-env
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-backend
+  namespace: growcomers
+spec:
+  type: ClusterIP
+  selector:
+    app: python-backend
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000

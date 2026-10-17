@@ -83,3 +83,76 @@ The system architecture is a three-tier architecture with Frontend, Backend (Ser
   <img src="readmeImages/chatbot.png" alt="chatbot" width="400" />
   <img src="readmeImages/checkout.png" alt="checkout" width="400" />
 </div>
+
+## DevOps and Deployment
+
+### Docker
+The application uses Docker and Docker Compose for local containerization.
+
+Validate the Compose configuration:
+```bash
+docker compose config --quiet
+```
+
+### CI/CD
+GitHub Actions workflow: .github/workflows/ci.yml.
+Jenkins pipeline configuration: Jenkinsfile.
+The pipeline configurations include Docker builds, Python syntax checks, and Trivy vulnerability scans. Pipeline execution must be verified separately.
+
+### Kubernetes
+Kubernetes manifests are maintained in the k8s/ directory. A local kind cluster is used for practice and validation.
+
+### Monitoring
+Prometheus, Grafana, and cAdvisor are configured in docker-compose.monitoring.yml.
+
+Start monitoring services:
+```powershell
+docker compose -f docker-compose.monitoring.yml up -d
+```
+
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3001
+- cAdvisor: http://localhost:8080
+
+The Grafana dashboard tracks service health, CPU usage, and memory usage.
+
+### Local Application URLs
+- Frontend: http://localhost:3000
+- Node.js backend: http://localhost:4000
+- Python backend: http://localhost:5000
+- Ganache RPC: http://127.0.0.1:8545
+
+## Local DevOps Monitoring
+
+### Start monitoring
+
+```powershell
+docker compose -f .\docker-compose.monitoring.yml up -d
+```
+
+### Endpoints
+
+- Grafana: http://localhost:3001
+- Prometheus: http://localhost:9090
+- cAdvisor: http://localhost:8080
+
+### Alerts
+
+Rules are configured in `monitoring/alert-rules.yml`.
+
+- `PrometheusTargetDown`: target remains down for 2 minutes.
+- `ContainerMemoryHigh`: container memory remains above 1 GiB for 5 minutes.
+
+View loaded rules at http://localhost:9090/alerts.
+
+Alert rules are evaluated by Prometheus. External notifications require Alertmanager and a configured receiver.
+
+### Kubernetes checks
+
+```powershell
+kubectl get deployments,pods,services,ingress -n growcomers
+kubectl get hpa -n growcomers
+kubectl top pods -n growcomers
+```
+
+Prometheus currently scrapes Prometheus and cAdvisor; it does not directly scrape Kubernetes pod metrics.

@@ -62,10 +62,10 @@ const addressSchema = Yup.object().shape({
   state: Yup.string().required("Required"),
   country: Yup.string().required("Required"),
   zipCode: Yup.string()
-    .matches(/^\d{6}$/, "Enter valid zip code")
+    .matches(/^\d{5}$/, "Enter valid zip code")
     .required("Required"),
   mobileNumber: Yup.string()
-    .matches(/^[6-9]\d{9}$/, "Enter valid number")
+    .matches(/^(03\d{9}|923\d{9}|\+923\d{9})$/, "Enter valid Pakistani mobile number (03XXXXXXXXX)")
     .required("Required"),
 });
 

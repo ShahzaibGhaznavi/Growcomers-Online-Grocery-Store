@@ -450,20 +450,17 @@ const getFeaturedProducts = async (req, res) => {
 
 const bestSelling = async (req, res) => {
   try {
+    // Use genuine review data when available.
     const products = await reviewModel.aggregate([
       {
         $group: {
           _id: "$ProductID",
-          count: { $count: {} },
+          count: { $sum: 1 },
           rating: { $avg: "$Rating" },
         },
       },
-      {
-        $sort: { count: -1 },
-      },
-      {
-        $limit: 10,
-      },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
       {
         $lookup: {
           from: "products",
@@ -472,14 +469,10 @@ const bestSelling = async (req, res) => {
           as: "productData",
         },
       },
-      {
-        $unwind: "$productData",
-      },
+      { $unwind: "$productData" },
       {
         $addFields: {
-          firstCategory: {
-            $first: "$productData.categoryId",
-          },
+          firstCategory: { $first: "$productData.categoryId" },
         },
       },
       {
@@ -499,35 +492,70 @@ const bestSelling = async (req, res) => {
         },
       },
       {
-        $addFields: {
-          imageUrl: {
-            $first: "$productData.imageURLHighRes",
-          },
-          brand: {
-            $first: "$brandData.title",
-          },
-          category: {
-            $first: "$categoryData.title",
-          },
-        },
-      },
-      {
         $project: {
           _id: "$productData._id",
           title: "$productData.title",
-          brand: "$productData.brand",
-          price: { $round: ["$productData.price", 2] },
-          MRP: { $round: ["$productData.MRP", 2] },
-          imageUrl: 1,
-          category: 1,
+          brand: { $first: "$brandData.title" },
+          price: "$productData.price",
+          MRP: "$productData.MRP",
+          imageUrl: { $first: "$productData.imageURLHighRes" },
+          category: { $first: "$categoryData.title" },
           rating: { $round: ["$rating", 1] },
           count: 1,
         },
       },
     ]);
-    res.status(200).json({ data: products });
+
+    if (products.length > 0) {
+      return res.status(200).json({ data: products });
+    }
+
+    // No reviews yet: show real active products without inventing sales or ratings.
+    const fallbackProducts = await productModel.aggregate([
+      { $match: { active: true } },
+      { $sort: { updatedAt: -1, _id: 1 } },
+      { $limit: 10 },
+      {
+        $addFields: {
+          firstCategory: { $first: "$categoryId" },
+          imageUrl: { $first: "$imageURLHighRes" },
+        },
+      },
+      {
+        $lookup: {
+          from: "brands",
+          localField: "brandId",
+          foreignField: "_id",
+          as: "brandData",
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "firstCategory",
+          foreignField: "_id",
+          as: "categoryData",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          brand: { $first: "$brandData.title" },
+          price: 1,
+          MRP: 1,
+          imageUrl: 1,
+          category: { $first: "$categoryData.title" },
+          rating: { $literal: 0 },
+          count: { $literal: 0 },
+        },
+      },
+    ]);
+
+    return res.status(200).json({ data: fallbackProducts });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Best-selling products error:", error);
+    return res.status(500).json({ message: error.message });
   }
 };
 

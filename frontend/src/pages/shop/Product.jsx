@@ -43,6 +43,7 @@ const Product = () => {
               <ImageSection
                 imageURL={productData.imageURL}
                 imageURLHighRes={productData.imageURLHighRes}
+                title={productData.title}
               />
               <ProductMain />
             </div>

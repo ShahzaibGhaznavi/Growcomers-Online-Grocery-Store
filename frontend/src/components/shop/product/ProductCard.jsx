@@ -16,6 +16,7 @@ import {
   getWishlist,
 } from "../../../redux/slice/wishlistSlice";
 import { formatCurrency } from "../../../utils/FormatCurrency";
+import { getProductImageSrc } from "../../../utils/productImage";
 
 const ProductCard = ({ data }) => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const ProductCard = ({ data }) => {
           <Link to={`/product/${data._id}`}>
             <img
               className="object-contain h-full w-full"
-              src={data.imageUrl}
+              src={getProductImageSrc(data.imageUrl || data.imageURL || data.imageURLHighRes, data.title)}
               alt=""
             />
           </Link>

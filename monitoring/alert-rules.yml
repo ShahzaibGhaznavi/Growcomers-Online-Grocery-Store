@@ -1,0 +1,20 @@
+groups:
+  - name: growcomers-monitoring
+    rules:
+      - alert: PrometheusTargetDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Prometheus target is down"
+          description: "Target {{ $labels.job }} has been unavailable for more than 2 minutes."
+
+      - alert: ContainerMemoryHigh
+        expr: container_memory_working_set_bytes{name!=""} > 1073741824
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container memory usage is high"
+          description: "Container {{ $labels.name }} has used more than 1 GiB of working memory for 5 minutes."

@@ -10,21 +10,27 @@ const createStripeIntent = async (req, res) => {
     const formattedAmount = parseFloat(
       (parseFloat(totalAmount) * 100).toFixed(0)
     );
+
     const payment = await stripe.paymentIntents.create({
       amount: formattedAmount,
       currency: "inr",
     });
 
-    res.status(200).json({ clientSecret: payment.client_secret });
+    res.status(200).json({
+      clientSecret: payment.client_secret,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Stripe payment error:", error.message);
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
 const createCryptoIntent = async (req, res) => {
   try {
     const userId = req.user.userId;
-
     const { totalAmount } = req.body;
 
     const paymentData = await paymentModel.create({
@@ -32,13 +38,45 @@ const createCryptoIntent = async (req, res) => {
       totalAmount: totalAmount,
     });
 
-    res.status(200).json({ paymentId: paymentData._id });
+    res.status(200).json({
+      paymentId: paymentData._id,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Crypto payment error:", error.message);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Development/Test payment only.
+// This does NOT connect to Stripe or any real payment gateway.
+const createTestIntent = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { totalAmount } = req.body;
+
+    const paymentData = await paymentModel.create({
+      userId: userId,
+      totalAmount: totalAmount,
+    });
+
+    res.status(200).json({
+      paymentId: `TEST-${paymentData._id}`,
+      message: "Test payment successful",
+    });
+  } catch (error) {
+    console.error("Test payment error:", error.message);
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
 module.exports = {
   createStripeIntent,
   createCryptoIntent,
+  createTestIntent,
 };

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: growcomers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: growcomers-online-grocery-store-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 4000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          envFrom:
+            - secretRef:
+                name: backend-env
+          env:
+            - name: GANACHE_NETWORK_URL
+              value: "http://host.docker.internal:8545"
+          volumeMounts:
+            - name: payment-contract
+              mountPath: /app/blockchain/build/PaymentProcessor.json
+              subPath: PaymentProcessor.json
+              readOnly: true
+      volumes:
+        - name: payment-contract
+          configMap:
+            name: payment-contract
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: growcomers
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+    - name: http
+      port: 4000
+      targetPort: 4000

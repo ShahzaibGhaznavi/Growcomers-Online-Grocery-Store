@@ -1,14 +1,10 @@
-/* eslint-disable no-undef */
 import axios from "axios";
 
 export const NODE_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://growcomers-server.onrender.com"
-    : "http://localhost:4000";
+  import.meta.env.VITE_NODE_API_URL || "http://localhost:4000";
+
 export const PYTHON_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://growcomersml.onrender.com"
-    : "http://localhost:4002";
+  import.meta.env.VITE_PYTHON_API_URL || "http://localhost:5000";
 
 export const NODE_API = axios.create({
   baseURL: NODE_BASE_URL,

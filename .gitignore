@@ -1,3 +1,60 @@
 
 # Local backup files
 docker-compose.yml.backup
+
+# Local database backups
+/growcomers-db-backup/
+
+# Local database backups
+/growcomers-db-backup/
+
+# Temporary catalog migration script
+/.migrate-catalog.js
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local backups and temporary files
+*.bak
+*.bak-*
+*.backup
+*.backup-*
+*~
+frontend-image-fix-backup-*/
+
+# Downloaded website assets (keep intended product images)
+frontend/public/products/shan-chicken-handi-50g_files/
+
+# Generated dependency audit report
+nodeBackend/audit-production.json
+
+# Local backup files
+docker-compose.yml.backup-before-ganache-port
+nodeBackend/package-lock.json.backup
+nodeBackend/server.js.backup
+
+# Generated monitoring backups
+/docker-compose.monitoring.yml.bak
+/docker-compose.monitoring.yml.bak2
+/docker-compose.monitoring.yml.before-alerts.bak
+/monitoring/prometheus.yml.before-alerts.bak
+
+# Dependency repair backups and audit reports
+/package-lock.json.local-backup
+/nodeBackend/*audit*
+/nodeBackend/*before-lock-repair*
+/nodeBackend/*before-fsevents-fix*
+/nodeBackend/*pre-docker-fix*
+/nodeBackend/*backup*
+/nodeBackend/package-lock.json.backup-*
+/nodeBackend/package.json.backup-*
+
+# Local generated backups and Terraform state backups
+/frontend/src/redux/slice/daiSlice.js.backup
+/frontend/src/utils/productImage.js.bak
+/terraform/*.tfstate.backup

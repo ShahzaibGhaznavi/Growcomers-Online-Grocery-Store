@@ -3,58 +3,66 @@ const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 const userModel = require("../models/userModel");
 const { generateToken } = require("../middlewares/generateToken");
-const { getNewuserId } = require("./userIdhandler");
 
 require("dotenv").config();
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENTID,
-      clientSecret: process.env.GOOGLE_CLIENTSECRET,
-      callbackURL: process.env.GOOGLE_CALLBACKURL,
-    },
-    async function (accessToken, refreshToken, profile, done) {
-      try {
-        const email = profile.email;
-        const name = profile.displayName;
-        let userData = await userModel.findOne({ email: email });
+if (
+  process.env.GOOGLE_CLIENTID &&
+  process.env.GOOGLE_CLIENTSECRET &&
+  process.env.GOOGLE_CALLBACKURL
+) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENTID,
+        clientSecret: process.env.GOOGLE_CLIENTSECRET,
+        callbackURL: process.env.GOOGLE_CALLBACKURL,
+      },
+      async function (accessToken, refreshToken, profile, done) {
+        try {
+          const email = profile.email;
+          const name = profile.displayName;
 
-        if (!userData) {
-          // const userId = getNewuserId().userId;
-          userData = await userModel.create({
-            // _id: userId,
-            name,
-            email,
-            isVerified: true,
-            provider: "Google",
-          });
-        }
+          let userData = await userModel.findOne({ email: email });
 
-        const accessToken = generateToken({
-          userId: userData._id,
-          role: userData.role,
-        });
+          if (!userData) {
+            userData = await userModel.create({
+              name,
+              email,
+              isVerified: true,
+              provider: "Google",
+            });
+          }
 
-        const toSend = {
-          data: {
-            name: userData.name,
-            email: userData.email,
-            id: userData._id,
-            mobileNumber: userData.mobileNumber,
+          const token = generateToken({
+            userId: userData._id,
             role: userData.role,
-            provider: userData.provider,
-          },
-          accessToken,
-        };
+          });
 
-        return done(null, toSend);
-      } catch (err) {
-        return done(err, null);
+          const toSend = {
+            data: {
+              name: userData.name,
+              email: userData.email,
+              id: userData._id,
+              mobileNumber: userData.mobileNumber,
+              role: userData.role,
+              provider: userData.provider,
+            },
+            accessToken: token,
+          };
+
+          return done(null, toSend);
+        } catch (err) {
+          return done(err, null);
+        }
       }
-    }
-  )
-);
+    )
+  );
+
+  console.log("Google OAuth configured");
+} else {
+  console.log("Google OAuth skipped: credentials not configured");
+}
 
 passport.serializeUser((user, done) => {
   done(null, user);

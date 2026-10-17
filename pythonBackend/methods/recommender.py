@@ -82,29 +82,39 @@ def loadRelatedProducts(productId, productText):
 
 
 def loadRecommendations(id):
-    productsDF = pd.read_csv('dataset/cleanedMetaData.csv')
     ratingsDF = pd.read_csv('dataset/cleanedRatings.csv')
-    neuralModel = tf.keras.models.load_model('trainedModels/neuralNetwork.h5')
 
+    # Match the complete user ID, not a partial substring.
+    tempRatingsDF = ratingsDF[
+        ratingsDF['UserID'].astype(str) == str(id)
+    ]
+
+    # Growcomers users have no matching Amazon-dataset ratings.
+    # Return no personalized recommendations instead of raising HTTP 500.
+    if tempRatingsDF.empty:
+        return []
+
+    userId = int(tempRatingsDF.iloc[0]['user'])
+
+    productsDF = pd.read_csv('dataset/cleanedMetaData.csv')
     productLen = productsDF.shape[0]
 
-    tempRatingsDF = ratingsDF[ratingsDF['UserID'].str.contains(id)]
-    if tempRatingsDF.empty:
-        raise Exception(
-            "No recommendation available. It seems you are a new user.")
-    userId = tempRatingsDF.iloc[0].user
+    neuralModel = tf.keras.models.load_model(
+        'trainedModels/neuralNetwork.h5'
+    )
 
     productArray = np.arange(productLen)
-    allUsers = np.array([int(userId) for _ in range(productLen)])
+    allUsers = np.array([userId for _ in range(productLen)])
 
-    pred = neuralModel.predict([productArray, allUsers])
+    pred = neuralModel.predict([productArray, allUsers], verbose=0)
     pred = pred.reshape([productLen])
     predIds = (-pred).argsort()[0:10]
 
-    productIds = ratingsDF.loc[ratingsDF["product_id"].isin(
-        predIds)].reset_index(drop=True)
-    productIds = list(productIds.ProductID.unique())
+    productIds = ratingsDF.loc[
+        ratingsDF["product_id"].isin(predIds)
+    ].reset_index(drop=True)
 
+    productIds = list(productIds.ProductID.unique())
     products = getProductData(productIds)
 
     return products

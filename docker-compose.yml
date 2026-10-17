@@ -1,6 +1,8 @@
 services:
   ganache:
     image: trufflesuite/ganache:v7.9.2
+    ports:
+      - "127.0.0.1:8545:8545"
     command:
       - --server.host
       - 0.0.0.0

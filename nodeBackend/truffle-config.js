@@ -4,8 +4,8 @@ module.exports = {
   migrations_directory: "./blockchain/migrations",
   networks: {
     development: {
-      host: "127.0.0.1",
-      port: 8545,
+      host: process.env.GANACHE_HOST || "127.0.0.1",
+      port: Number(process.env.GANACHE_PORT || 8545),
       network_id: "*",
     },
   },

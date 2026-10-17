@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Growcomers Product Image Review</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      background: #f5f7f5;
+    }
+    h1 { color: #18733b; }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px #0001;
+    }
+    img {
+      width: 100%;
+      height: 250px;
+      object-fit: contain;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Growcomers — Product Image Review</h1>
+  <div class="products">
+    <div class="card">
+      <img src="fresh-apples.jpg" alt="Fresh apples">
+      <h3>Fresh Apples 1kg</h3>
+      <p>fresh-apples.jpg</p>
+    </div>
+    <div class="card">
+      <img src="fresh-bananas.jpg" alt="Fresh bananas">
+      <h3>Fresh Bananas 1 Dozen</h3>
+      <p>fresh-bananas.jpg</p>
+    </div>
+    <div class="card">
+      <img src="lays-classic.jpg" alt="Lays Classic">
+      <h3>Lays Classic 50g</h3>
+      <p>lays-classic.jpg</p>
+    </div>
+    <div class="card">
+      <img src="pepsi.jpg" alt="Pepsi">
+      <h3>Pepsi 1.5L</h3>
+      <p>pepsi.jpg</p>
+    </div>
+  </div>
+</body>
+</html>

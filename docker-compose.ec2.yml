@@ -1,0 +1,72 @@
+services:
+  ganache:
+    image: trufflesuite/ganache:v7.9.2
+    command:
+      - --server.host
+      - 0.0.0.0
+      - --server.port
+      - "8545"
+      - --chain.networkId
+      - "1337"
+      - --chain.chainId
+      - "1337"
+      - --wallet.totalAccounts
+      - "10"
+      - --wallet.defaultBalance
+      - "1000"
+      - --database.dbPath
+      - /data
+    volumes:
+      - ganache-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').request({host:'127.0.0.1',port:8545,path:'/',method:'POST'},r=>process.exit(0)).on('error',()=>process.exit(1)).end()"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  contract-deployer:
+    image: 332730082659.dkr.ecr.ap-south-1.amazonaws.com/growcomers-backend:latest
+    env_file:
+      - ./nodeBackend/.env
+    environment:
+      GANACHE_HOST: ganache
+      GANACHE_PORT: "8545"
+    command: ["npx", "truffle", "migrate", "--network", "development"]
+    depends_on:
+      ganache:
+        condition: service_healthy
+    volumes:
+      - contract-artifacts:/app/blockchain/build
+    restart: "no"
+
+  backend:
+    image: 332730082659.dkr.ecr.ap-south-1.amazonaws.com/growcomers-backend:latest
+    container_name: growcomers-backend
+    env_file:
+      - ./nodeBackend/.env
+    environment:
+      GANACHE_NETWORK_ID: "1337"
+      GANACHE_NETWORK_URL: http://ganache:8545
+    ports:
+      - "4000:4000"
+    depends_on:
+      ganache:
+        condition: service_healthy
+      contract-deployer:
+        condition: service_completed_successfully
+    volumes:
+      - contract-artifacts:/app/blockchain/build
+    restart: unless-stopped
+
+  frontend:
+    image: 332730082659.dkr.ecr.ap-south-1.amazonaws.com/growcomers-frontend:latest
+    container_name: growcomers-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
+volumes:
+  ganache-data:
+  contract-artifacts:
