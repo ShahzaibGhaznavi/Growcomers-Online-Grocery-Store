@@ -23,12 +23,12 @@
 
 ## 📑 Table of Contents
 
+- [Screenshots](#-screenshots)
 - [Overview](#-overview)
 - [Application Features](#-application-features)
 - [DevOps Implementation](#-devops-implementation)
 - [Architecture](#-architecture)
 - [Technology Stack](#-technology-stack)
-- [Screenshots](#-screenshots)
 - [Local Setup](#-local-setup)
 - [Kubernetes Deployment](#-kubernetes-deployment)
 - [CI/CD and Security](#-cicd-and-security)
@@ -38,6 +38,52 @@
 - [Security Considerations](#-security-considerations)
 - [Future Improvements](#-future-improvements)
 - [Credits and Contributions](#-credits-and-contributions)
+
+---
+
+## 📸 Screenshots
+
+The following screenshots document the application and DevOps implementation.
+
+### Application
+
+| Homepage | Product Listing |
+|---|---|
+| ![Growcomers Homepage](screenshots/01-growcomers-homepage.png) | ![Growcomers Products](screenshots/02-growcomers-products.png) |
+
+### Containers and Kubernetes
+
+| Docker Containers | Kubernetes Workloads |
+|---|---|
+| ![Docker Containers](screenshots/04-docker-containers.png) | ![Kubernetes Workloads](screenshots/05-kubernetes-workloads.png) |
+
+### Monitoring
+
+| Prometheus Targets | Grafana Dashboard |
+|---|---|
+| ![Prometheus Targets](screenshots/03-prometheus-targets.png) | ![Grafana Dashboard](screenshots/06-grafana-monitoring-dashboard.png) |
+
+| Grafana Metrics |
+|---|
+| ![Grafana Metrics](screenshots/07-grafana-metrics.png) |
+
+### Infrastructure and CI/CD
+
+| Terraform Infrastructure | GitHub Actions CI |
+|---|---|
+| ![Terraform Infrastructure](screenshots/08-terraform-infrastructure.png) | ![GitHub Actions CI](screenshots/09-github-actions-ci-success.png) |
+
+### AWS and Application Workflow
+
+| AWS EC2 | AWS ECR |
+|---|---|
+| ![AWS EC2 Instance](screenshots/10-aws-ec2-instance.png) | ![AWS ECR Repositories](screenshots/11-aws-ecr-repositories.png) |
+
+| Payment Workflow |
+|---|
+| ![Payment Successful](screenshots/12-payment-successful.png) |
+
+> Screenshots are evidence of the states captured when they were taken. They do not guarantee that AWS resources or CI workflows are currently active.
 
 ---
 
@@ -187,52 +233,6 @@ flowchart TB
 | Monitoring | Prometheus, Grafana, cAdvisor |
 | Operating System / Scripting | Ubuntu, Linux, Bash |
 | Version Control | Git, GitHub |
-
----
-
-## 📸 Screenshots
-
-The following screenshots document the application and DevOps implementation.
-
-### Application
-
-| Homepage | Product Listing |
-|---|---|
-| ![Growcomers Homepage](screenshots/01-growcomers-homepage.png) | ![Growcomers Products](screenshots/02-growcomers-products.png) |
-
-### Containers and Kubernetes
-
-| Docker Containers | Kubernetes Workloads |
-|---|---|
-| ![Docker Containers](screenshots/04-docker-containers.png) | ![Kubernetes Workloads](screenshots/05-kubernetes-workloads.png) |
-
-### Monitoring
-
-| Prometheus Targets | Grafana Dashboard |
-|---|---|
-| ![Prometheus Targets](screenshots/03-prometheus-targets.png) | ![Grafana Dashboard](screenshots/06-grafana-monitoring-dashboard.png) |
-
-| Grafana Metrics |
-|---|
-| ![Grafana Metrics](screenshots/07-grafana-metrics.png) |
-
-### Infrastructure and CI/CD
-
-| Terraform Infrastructure | GitHub Actions CI |
-|---|---|
-| ![Terraform Infrastructure](screenshots/08-terraform-infrastructure.png) | ![GitHub Actions CI](screenshots/09-github-actions-ci-success.png) |
-
-### AWS and Application Workflow
-
-| AWS EC2 | AWS ECR |
-|---|---|
-| ![AWS EC2 Instance](screenshots/10-aws-ec2-instance.png) | ![AWS ECR Repositories](screenshots/11-aws-ecr-repositories.png) |
-
-| Payment Workflow |
-|---|
-| ![Payment Successful](screenshots/12-payment-successful.png) |
-
-> Screenshots are evidence of the states captured when they were taken. They do not guarantee that AWS resources or CI workflows are currently active.
 
 ---
 
