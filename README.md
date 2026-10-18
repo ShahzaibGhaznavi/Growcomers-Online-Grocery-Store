@@ -83,7 +83,6 @@ The following screenshots document the application and DevOps implementation.
 |---|
 | ![Payment Successful](screenshots/12-payment-successful.png) |
 
-> Screenshots are evidence of the states captured when they were taken. They do not guarantee that AWS resources or CI workflows are currently active.
 
 ---
 
