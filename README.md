@@ -156,3 +156,43 @@ kubectl top pods -n growcomers
 ```
 
 Prometheus currently scrapes Prometheus and cAdvisor; it does not directly scrape Kubernetes pod metrics.
+
+<!-- GROWCOMERS_SCREENSHOTS_START -->
+## Project Screenshots
+
+Screenshots below document the application's user interface, infrastructure,
+containerization, Kubernetes deployment, monitoring, and CI/CD workflow.
+
+### Application
+
+![Growcomers Homepage](screenshots/01-growcomers-homepage.png)
+
+![Growcomers Products](screenshots/02-growcomers-products.png)
+
+![Payment Success](screenshots/12-payment-successful.png)
+
+### Containers and Kubernetes
+
+![Docker Containers](screenshots/04-docker-containers.png)
+
+![Kubernetes Workloads](screenshots/05-kubernetes-workloads.png)
+
+### Monitoring and Observability
+
+![Prometheus Targets](screenshots/03-prometheus-targets.png)
+
+![Grafana Monitoring Dashboard](screenshots/06-grafana-monitoring-dashboard.png)
+
+![Grafana Metrics](screenshots/07-grafana-metrics.png)
+
+### Infrastructure and CI/CD
+
+![Terraform Infrastructure](screenshots/08-terraform-infrastructure.png)
+
+![GitHub Actions CI Success](screenshots/09-github-actions-ci-success.png)
+
+![AWS EC2 Instance](screenshots/10-aws-ec2-instance.png)
+
+![AWS ECR Repositories](screenshots/11-aws-ecr-repositories.png)
+
+<!-- GROWCOMERS_SCREENSHOTS_END -->
