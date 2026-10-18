@@ -58,3 +58,7 @@ nodeBackend/server.js.backup
 /frontend/src/redux/slice/daiSlice.js.backup
 /frontend/src/utils/productImage.js.bak
 /terraform/*.tfstate.backup
+*.before-*
+/trivy-cache/
+/trivy-python-scan/
+/trivy-python-security.json

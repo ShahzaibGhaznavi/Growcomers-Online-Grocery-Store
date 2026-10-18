@@ -19,8 +19,14 @@ load_dotenv(find_dotenv())
 JWTkey = os.environ.get("JWT_SECRET_KEY")
 
 app = Flask(__name__)
-app.secret_key = JWTkey
-app.config['SESSION_COOKIE_HTTPONLY'] = False
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+if not JWTkey:
+    raise RuntimeError("JWT_SECRET_KEY environment variable is required")
+
+if not app.secret_key:
+    raise RuntimeError("FLASK_SECRET_KEY environment variable is required")
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 CORS(app, supports_credentials=True)
 
 
